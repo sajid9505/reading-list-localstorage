@@ -2,16 +2,54 @@ let books = [] // array containing book objects {title: '', author: ''}
 
 /* Check localStorage for books */
 
-/* Check if books is empty and show/hide relevant message */ 
+if(window.localStorage.getItem('books')){
 
-/* If books is not emply, populate view with book details in #list */
+    books = JSON.parse(window.localStorage.getItem('books'))
+}
+// console.log(books)
+
+/* Check if books is empty and show/hide relevant message 
+If books is not emply, populate view with book details in #list */
+
+if(books.length != 0){
+    $('#empty').hide()
+    books.forEach(element => {
+        let item = $('<li>').text(element.title + ' - ' + element.author)        
+        $('#list').append(item)
+    });
+}
+
+
 
 /* Add a book button click should reveal the form */
+
+$('#show-add').click(function(){
+    $('#addForm').show()
+    $(this).hide()
+})
 
 /* On ADD button click, 
     ensure the input fields contain values, 
     then add the book to HTML view 
     also save updated books array to localStorage 
 */
+
+$('#add').click(function(){
+    var title = $('#title').val()
+    var author = $('#author').val()
+
+    if(title && author){
+        $('#empty').hide()
+        //add to list
+
+        let item = $('<li>').text(title + ' - ' + author)
+        $('#list').append(item)
+        books.push({title:title, author:author})
+        window.localStorage.setItem('books', JSON.stringify(books))
+
+    }else{
+        console.log('Fields empty')
+    }
+})
 
 /* Refreshing the page, should show all the stored books */
